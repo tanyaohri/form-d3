@@ -10,8 +10,9 @@ export const validationSchema = Yup.object().shape({
         .required("Required"),
     
     phoneNumber: Yup
-        .number()
+        .string()
         .max(10, "number should be of 10 digits")
+        .min(10, "Phone digits must of len 10")
         .typeError("Enter valid Phone Number")
         .required('Required'),
    

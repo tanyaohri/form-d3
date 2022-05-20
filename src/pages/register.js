@@ -1,94 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Grid,
     Paper,
     Button,
-    Card,
-    Box,
-    CardContent,
-    CardMedia,
-    Divider,
-    Typography
+    Typography,
+    makeStyles
 } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { FormHelperText } from '@material-ui/core'
 import { validationSchema } from '../providers/utils';
 import { LabelInputField } from '../components/inputField';
-import  Side  from '../providers/images/side.jpg';
+import Side from '../providers/images/side.jpg';
+import { useNavigate } from "react-router-dom";
+import { useStyles } from '../components/customStyles/style';
+import { FormFields } from '../components/fields';
+import { initialValues } from '../components/initial';
+import { withStyle } from '@material-ui/core/styles';
 
-const FormFields =   [{
-    label:"Your email address",
-    identifier:"email"
-},
-{
-    label:"Your password",
-    identifier:"password"
+const checkboxStyle = theme => ({
+    root: {
+        '&$checked': {
+            color:"#1E90FF"
+        },
     },
-    {
-        label:"Confirm your password",
-        identifier:"confirmPassword"
-    },
-    {
-        label:"Your full name",
-        identifier:"name"
-    },
-{
-    label:" Your phone number",
-    identifier:"phoneNumber"
-},
+    checked:{},
+})
 
-]
-const paperStyle = {};
+
+
+
 const Register = () => {
+    
+    const classes = useStyles();
+
   
-    const initialValues = {
-        name: '',
-        email: '',
-        phoneNumber: '',
-        password: '',
-        confirmPassword: '',
-        termsAndConditions: false
-    }
 
+    const navigation = useNavigate();
     const onSubmit = (values, props) => {
-        console.log(values)
-        console.log(props)
-        setTimeout(() => {
-            props.resetForm()
-            props.setSubmitting(false)
-        }, 2000)
+        navigation("/d3_graph");
     }
-    
-    //const imgURL = "https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg";
-    
-    //const imgURL = "src/providers/images/side.jpg";
-
     return (
 
-        //<LabelInputField
-        //    handleChange={setName}
-        //    value={name}
-        //    label={ "Your Name : "}
-        //    helperText={"Enter your name of length more than 3"}
-        ///>
         <React.Fragment >
-            <Paper style={{
-                width: "70%", height:" 70%", marginTop: "20px", marginLeft: "14%", border: "4px solid #ECECEC"
-            }} >
-                <Grid container  style={{marginBottom:"10px",marginTop:"10px"}}> 
+            <Paper className={classes.paperStyle} >
+                <Grid container> 
                     {/* Left Image */}
-                    <Grid item xs={12} md={7} sm={11}
-                        style={{
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'fill',
-                            //backgroundImage:`url(${imgURL})`
-                        }}>
-                       <img style={{width:"100%",height:"100%"}} src={Side} />
-                        
-            
+                    <Grid item xs={12} md={7} sm={10}>
+                        <img className={classes.imgStyle} src={Side} />
                     </Grid>
                     
                     <Grid item xs={1} md={1} sm={12}></Grid>
@@ -103,48 +63,71 @@ const Register = () => {
                             onSubmit={onSubmit}
                         >
                             
-                                {(props) => (
-                                <Form>
-                                    <Grid container>
-                                        {FormFields.map((field, ind) => (
-                                            <Grid item xs={12} sm={4} md={12} >
-                                                <LabelInputField {...field} />  
-                                            </Grid>    
-                                        ))}
-                                    </Grid>
-                                       
-                                        {/*<FormHelperText>
-                                            <ErrorMessage name="termsAndConditions" />
-                                        </FormHelperText>*/}
-                                    <Grid item xs={12} sm={4} md={12} >
+                            {(props) => (
+                            <Form>
+                                <Grid container>
+                                    {FormFields.map((field, ind) => (
+                                        <Grid item xs={12} sm={4} md={12} >
+                                            <LabelInputField {...field} />  
+                                        </Grid>    
+                                    ))}
+                                </Grid>
+                                    
+                                <Grid item xs={12} sm={12} md={12} >
                                     <FormControlLabel
-                                        control={<Field as={Checkbox} name="termsAndConditions" />}
-                                        label="I read and agree terms and conditions."
+                                        control={
+                                                <Field
+                                                    className={classes.checkboxStyle}
+                                                    as={Checkbox}
+                                                    name="termsAndConditions"
+                                                    
+                                                />
+                                                }
+                                                label={
+                                                    <Typography style={{ fontSize: "11px"}}>
+                                                        I read and agree Terms and Conditions.
+                                                    </Typography>
+                                                
+                                                } 
                                         />
+                                     
+                                            <FormHelperText>
+                                                <ErrorMessage component={() => {
+                                                    return (
+                                                        <Typography style={{
+                                                            color: "red",
+                                                            fontSize: "10px",
+                                                            marginLeft:"10px"
+                                                        }}>
+                                                            Please accept the terms and condition
+                                                             </Typography>
                                         
-                                    <FormHelperText>
-                                    <ErrorMessage name="termsAndConditions" />
-                                    </FormHelperText>
+                                                    )
+                                                    }}  name="termsAndConditions" />
+                                            </FormHelperText>
+                                       
+                                
+                                        <FormControlLabel
+                                            control={
                                             <Button
-                                                style={{margin:"10px"}}
+                                                className={classes.buttonStyle}                                                
                                                 type='submit'
                                                 variant='contained'
-                                                disabled={props.isSubmitting}
-                                                color='primary'
-                                            >
-                                                {props.isSubmitting ? "Loading" : "Create Account"}
-                                            </Button>
+                                            >  
+                                                {props.isSubmitting ? "Loading" : "Create account"}
+                                            </Button>}
+                                            />
                                         </Grid>
-                                    </Form>
-                                )}
+                            </Form>
+                            )}
                         </Formik>
                     </Grid>
                 </Grid>
 
                     
-                </Paper>
+            </Paper>
             
-            </React.Fragment>
+        </React.Fragment>
     )
 }
 
