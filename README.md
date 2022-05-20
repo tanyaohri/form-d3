@@ -19,10 +19,4 @@ by the help of graphs build using D3.js**
 * Memoized code for preventing re-rendering component
 * Less styling classes for having component styled
 
-#### Deployment link : 
-
-#### IMAGE
-
-
-
-
+#### Deployment link : https://form-d3.vercel.app/
